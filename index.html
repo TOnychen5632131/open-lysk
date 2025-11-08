@@ -1,21 +1,79 @@
-<html>
+<!doctype html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <title>正在打开《恋与深空》 · Opening Love and Deep Space</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>打开恋与深空</title>
-  <script>
-    window.onload = () => {
-      // 尝试唤起（此处 loveanddeepspace:// 为假设，若无效则直接进入 App Store）
-      window.location.href = 'loveanddeepspace://';
-      setTimeout(() => {
-        // 如果 2 秒内没响应，就跳 App Store
-        window.location.href = 'https://apps.apple.com/app/id6443467666';
-      }, 2000);
-    };
-  </script>
+  <style>
+    :root{--primary:#007aff;}
+    html,body{height:100%}
+    body{
+      margin:0;display:flex;flex-direction:column;justify-content:center;align-items:center;
+      font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Segoe UI,Roboto,Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      background:#fafafa;color:#111;text-align:center;padding:32px
+    }
+    h1{font-size:20px;margin:0 0 8px}
+    p{margin:6px 0 0;color:#444;line-height:1.5}
+    .btns{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    a.button{
+      display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--primary);
+      color:var(--primary);text-decoration:none
+    }
+    .muted{color:#777;font-size:13px;margin-top:10px}
+    .spinner{width:28px;height:28px;border:3px solid #e0e0e0;border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin:18px auto 8px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    noscript{margin-top:10px;color:#b00}
+  </style>
 </head>
-<body style="font-family:-apple-system;text-align:center;padding-top:100px;">
-  <h2>正在打开恋与深空...</h2>
-  <p>若未跳转，请<a href="https://apps.apple.com/app/id6443467666">点击此处前往 App Store</a></p>
+<body>
+  <div class="spinner" aria-hidden="true"></div>
+  <h1>正在为你打开《恋与深空》</h1>
+  <p>若未自动跳转，下面按钮可手动打开。</p>
+  <p class="muted">Opening <em>Love and Deep Space</em>… If it doesn’t open automatically, use the buttons below.</p>
+
+  <div class="btns">
+    <!-- iOS App Store 直达（已装会显示“打开”） -->
+    <a class="button" id="iosStore" href="https://apps.apple.com/cn/app/id1618911882">前往 App Store · Open in App Store</a>
+    <!-- 官方通用链接（可直接唤起 App） -->
+    <a class="button" id="ulink" href="https://x3cn-universallink-file.papegames.com/appstore?pagename=deepspace-home-cn">
+      直接打开 / 通用链接 · Universal Link
+    </a>
+    <!-- 官网备用 -->
+    <a class="button" id="site" href="https://deepspace.papegames.com/m/home">游戏官网 · Official Site</a>
+  </div>
+
+  <p class="muted">iOS 将优先尝试通用链接；若 2 秒无响应，会自动前往 App Store。</p>
+
+  <noscript>需要开启 JavaScript 才能自动跳转 · JavaScript is required for auto-redirect.</noscript>
+
+  <script>
+    (function () {
+      var isIOS = /iP(hone|od|ad)/i.test(navigator.userAgent);
+      var isWeChat = /MicroMessenger/i.test(navigator.userAgent); // 提示：微信内通常会拦截通用链接
+      var universalLink = "https://x3cn-universallink-file.papegames.com/appstore?pagename=deepspace-home-cn";
+      var iosStore = "https://apps.apple.com/cn/app/id1618911882";
+      var site = "https://deepspace.papegames.com/m/home";
+
+      // 优先策略：
+      // iOS 且非微信内 → 先尝试 Universal Link；2 秒无响应 → App Store
+      // 其他环境 → 打开游戏官网（页面保留按钮供手动选择）
+      if (isIOS && !isWeChat) {
+        // 先尝试直接唤起 App（Universal Link）
+        location.replace(universalLink);
+        // 2 秒仍未切换到 App，则自动去 App Store
+        setTimeout(function () {
+          location.replace(iosStore);
+        }, 2000);
+      } else {
+        // 非 iOS 或内嵌浏览器：保守处理，进官网
+        //（保留按钮，用户可手动点 App Store 或通用链接）
+        setTimeout(function () {
+          if (document.visibilityState === "visible") {
+            location.replace(site);
+          }
+        }, 800);
+      }
+    })();
+  </script>
 </body>
 </html>
