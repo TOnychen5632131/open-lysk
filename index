@@ -1,0 +1,21 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>打开恋与深空</title>
+  <script>
+    window.onload = () => {
+      // 尝试唤起（此处 loveanddeepspace:// 为假设，若无效则直接进入 App Store）
+      window.location.href = 'loveanddeepspace://';
+      setTimeout(() => {
+        // 如果 2 秒内没响应，就跳 App Store
+        window.location.href = 'https://apps.apple.com/app/id6443467666';
+      }, 2000);
+    };
+  </script>
+</head>
+<body style="font-family:-apple-system;text-align:center;padding-top:100px;">
+  <h2>正在打开恋与深空...</h2>
+  <p>若未跳转，请<a href="https://apps.apple.com/app/id6443467666">点击此处前往 App Store</a></p>
+</body>
+</html>
